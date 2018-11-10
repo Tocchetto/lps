@@ -1,0 +1,34 @@
+---
+title: "Project Proposal"
+author: "Guilherme Zanatta Tocchetto"
+date: "9 de novembro de 2018"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Dataset Information
+
+The choosen dataset contains all the details of the applications on Google Play. There are 13 features that describe a given app, the information given in each row of the dataset includes:
+
+ - The name of the app;
+ - The category that the app belongs to;
+ - The overall user rating of the app;
+ - The number of revews of the app;
+ - The size of the app;
+ - The number of users that downloaded/installed the app;
+ - If the app is paid of free;
+ - The price of the app;
+ - The age group that the app is targeted at;
+ - It's genre;
+ - The date that it was last updated;
+ - The current version of the app available on PlayStore;
+ - The minimum required Android version to run the app.
+
+
+## Questions to answer
+
+- Which category of apps is the most downloaded?
+- How many categories have the mean rating grater then 4?
+- Is the content rating related to the number of downloads/installs?
+- How does the required android version relate to the number of downloads?
