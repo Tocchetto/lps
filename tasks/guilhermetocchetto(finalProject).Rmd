@@ -1,0 +1,115 @@
+---
+title: "Project Proposal"
+author: "Guilherme Zanatta Tocchetto"
+date: "9 de novembro de 2018"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Dataset Information
+
+The choosen dataset contains all the details of the applications on Google Play. There are 13 features that describe a given app, the information given in each row of the dataset includes:
+
+ - The name of the app;
+ - The category that the app belongs to;
+ - The overall user rating of the app;
+ - The number of revews of the app;
+ - The size of the app;
+ - The number of users that downloaded/installed the app;
+ - If the app is paid of free;
+ - The price of the app;
+ - The age group that the app is targeted at;
+ - It's genre;
+ - The date that it was last updated;
+ - The current version of the app available on PlayStore;
+ - The minimum required Android version to run the app.
+
+```{r include=TRUE}
+library(readr)
+URL <- "data-set/googleplaystore.csv"
+df <- read_delim(URL, delim=",")
+df
+#Delete inconsistent data
+df <- na.omit(df)
+df
+```
+
+
+## Questions to answer
+
+- Which category of apps is the most downloaded?
+#I've changed the question because the installs collumn doesn't provide a consistent value
+- How many apps are there in each category?
+```{r echo=FALSE}
+
+df$Category <- gsub('_', ' ', df$Category)
+
+library(ggplot2);
+  ggplot(df,
+  aes(Category,..count..))+
+  geom_point(stat = "count", size = 1)+
+  scale_y_continuous(name ="Number of Accidents", breaks=seq(0,1750,100))+
+  theme(axis.text.x = element_text(angle = 40, hjust = 1))
+
+#library(ggplot2);
+  #ggplot(df,
+  #aes(Category,..count..))+
+  #geom_point(aes(col=Category), stat = "count", size = 1)+
+  #scale_y_continuous(name ="Number of Accidents", breaks=seq(0,1750,50))+
+  #theme(axis.title.x=element_blank(),
+        #axis.text.x=element_blank(),
+        #axis.ticks.x=element_blank())
+```
+
+- How many categories have the mean rating grater than 4?
+
+```{r echo=FALSE}
+library(dplyr)
+library(magrittr)
+
+catNames <- c("ART AND DESIGN","AUTO AND VEHICLES","BEAUTY","BOOKS AND REFERENCE","BUSINESS","COMICS","COMMUNICATION","DATING","EDUCATION","ENTERTAINMENT","EVENTS", "FAMILY", "FINANCE","GAME","HEALTH AND FITNESS","HOUSE AND HOME","LIBRARIES AND DEMO","LIFESTYLE","MAPS AND NAVIGATION","MEDICAL","NEWS AND MAGAZINES","PARENTING","PERSONALIZATION","PHOTOGRAPHY","PRODUCTIVITY","SHOPPING","SOCIAL","SPORTS","TOOLS","TRAVEL AND LOCAL","VIDEO PLAYERS","WEATHER")
+
+ratingAverage <- c()
+
+dfRate <- data.frame("Categories"=catNames)
+dfRate$Ratings <- NA
+
+for (i in 1:32) {
+  n_rows = df %>% filter(Category==catNames[i]) %>% tally()
+  sum = df %>% filter(Category==catNames[i]) %>% select(Rating) %>% sum()
+  average = sum / n_rows
+  dfRate$Ratings[i] <- average[1,1]
+}
+print(dfRate)
+
+library(ggplot2);
+  ggplot(dfRate,
+  aes(Ratings, Categories))+geom_point()
+```
+
+- Is the content rating related to the number of downloads/installs?
+#I've changed the question because the installs collumn doesn't provide a consistent value
+- Is the content rating related to the number of reviews?
+
+```{r echo=FALSE}
+
+library(ggplot2);
+  ggplot(df,
+  aes(Rating,..count..))+
+  geom_point(aes(col=Rating), stat = "count", size = 1)+
+  scale_y_continuous(name ="Number of Accidents", breaks=seq(0,1750,50))
+```
+
+- How does the required android version relate to the number of downloads?
+#I've changed the question because the installs collumn doesn't provide a consistent value
+- How does the required android version relate to the number of reviews?
+
+```{r echo=FALSE}
+
+library(ggplot2);
+  ggplot(df,
+  aes(Rating,..count..))+
+  geom_point(aes(col=Rating), stat = "count", size = 1)+
+  scale_y_continuous(name ="Number of Accidents", breaks=seq(0,1750,50))
+```
