@@ -94,22 +94,55 @@ library(ggplot2);
 
 ```{r echo=FALSE}
 
-library(ggplot2);
-  ggplot(df,
-  aes(Rating,..count..))+
-  geom_point(aes(col=Rating), stat = "count", size = 1)+
-  scale_y_continuous(name ="Number of Accidents", breaks=seq(0,1750,50))
+
+
+dfRate$Reviews <- NA
+
+for (i in 1:32) {
+  n_rows = df %>% filter(Category==catNames[i]) %>% tally()
+  sum = df %>% filter(Category==catNames[i]) %>% select(Reviews) %>% sum()
+  average = sum / n_rows
+  dfRate$Reviews[i] <- average[1,1]
+}
+
+dfRate
+
+type <-c(dfRate$Ratings, dfRate$Reviews)
+type
+
+p <-ggplot(dfRate, aes(Categories, Ratings))
+p +geom_bar(stat = "identity", aes(fill = Reviews), position = "dodge") +
+  xlab("Months") + ylab("Count") +
+  ggtitle("Chickens & Eggs") +
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 40, hjust = 1))
+
+
+
 ```
 
-- How does the required android version relate to the number of downloads?
-#I've changed the question because the installs collumn doesn't provide a consistent value
-- How does the required android version relate to the number of reviews?
+- How does the type of the app (paid/free) relate to the rating?
 
 ```{r echo=FALSE}
 
-library(ggplot2);
-  ggplot(df,
-  aes(Rating,..count..))+
-  geom_point(aes(col=Rating), stat = "count", size = 1)+
-  scale_y_continuous(name ="Number of Accidents", breaks=seq(0,1750,50))
+dfRate$Reviews <- NA
+
+for (i in 1:32) {
+  n_rows = df %>% filter(Category==catNames[i]) %>% tally()
+  sum = df %>% filter(Category==catNames[i]) %>% select(Reviews) %>% sum()
+  average = sum / n_rows
+  dfRate$Reviews[i] <- average[1,1]
+}
+
+dfRate
+
+type <-c(dfRate$Ratings, dfRate$Reviews)
+type
+
+p <-ggplot(dfRate, aes(Categories, Ratings))
+p +geom_bar(stat = "identity", aes(fill = Reviews), position = "dodge") +
+  xlab("Months") + ylab("Count") +
+  ggtitle("Chickens & Eggs") +
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 40, hjust = 1))
 ```
