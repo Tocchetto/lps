@@ -1,11 +1,15 @@
 ---
-title: "Project Proposal"
+title: "Final Project"
 author: "Guilherme Zanatta Tocchetto"
-date: "9 de novembro de 2018"
+date: "30 de novembro de 2018"
 output:
   pdf_document: default
   html_document: default
 ---
+
+## Introduction
+
+In this study a data set of the google play store apps (availabe at the following website: https://www.kaggle.com/lava18/google-play-store-apps) is analized.
 
 ## Dataset Information
 
@@ -25,6 +29,8 @@ The choosen dataset contains all the details of the applications on Google Play.
  - The current version of the app available on PlayStore;
  - The minimum required Android version to run the app.
 
+The original dataset have 10.041 rows and 13 columns.
+
 ```{r init, include=FALSE, echo=FALSE}
 library(readr)
 URL <- "data-set/googleplaystore.csv"
@@ -35,12 +41,13 @@ df <- na.omit(df)
 df
 ```
 
+\pagebreak
 
-## Questions to answer
+## How many apps are there in each category?
 
-- Which category of apps is the most downloaded?
-<!--I've changed the question because the installs collumn doesn't provide a consistent value-->
-- How many apps are there in each category?
+To know how many applications you have in each of the categories, knowing that each row in the dataset corresponds to one application, we just have to count the number of rows for each category.
+Based on that the graph bellow was plotted showing us that the amount of apps on each category.
+
 ```{r graficoCat, echo=FALSE, fig.align='center', fig.width=6, fig.height=5}
 
 df$Category <- gsub('_', ' ', df$Category)
@@ -65,7 +72,12 @@ library(ggplot2);
         #axis.ticks.x=element_blank())
 ```
 
-- How many categories have the mean rating grater than 4?
+\pagebreak
+
+## How many categories have the mean rating grater than 4?
+
+To analyze how many of the categories have a rating greater than 4, the apps were categorized by category and the average rating was calculated for each set of apps in a given category.
+As shown in the graph below, all the categories have the rating above four, with the exception of "Dating" category.
 
 ```{r graficoRat4,  echo=FALSE, fig.align='center', fig.width=6, fig.height=7}
 library(dplyr, warn.conflicts = FALSE)
@@ -87,19 +99,19 @@ for (i in 1:32) {
 
 library(ggplot2);
   ggplot(dfRate,
-  aes(Ratings, Categories))+geom_point()+
+  aes(Categories, Ratings))+geom_point()+
+  theme(axis.text.x = element_text(angle = 65, hjust = 1))+
   labs(title="Apps Categories Vs Apps Ratings", 
        subtitle="From kaggle.com", 
        caption="Google Play Store Apps")
 ```
+\pagebreak
 
-- Is the content rating related to the number of downloads/installs?
-<!--I've changed the question because the installs collumn doesn't provide a consistent value-->
-- Is the content rating related to the number of reviews?
+## How the rating relate to the number of reviews?
+
+To find out the relation of the reviews with the number of evaluations, an average of the evaluations of each category of the applications was generated and from that the graph below was generated. Based on the data that is shown in the graph below it seems that the number of reviews does not have a significant influence on users' app ratings, you can see that there are categories with a large number of reviews with ratings close to the highest and lowest ratings.
 
 ```{r graficoRateXRev, echo=FALSE, fig.align='center', fig.width=8.5, fig.height=5}
-
-
 
 dfRate$Reviews <- NA
 
@@ -129,9 +141,12 @@ p +geom_bar(stat = "identity", aes(fill = Reviews), position = "dodge") +
 
 
 ```
+\pagebreak
 
-- How does the type of the app (paid/free) relate to the rating?
-É possível ver que o ser pago ou gratz não influencia na percepção do usuário em relação a qualidade do aplicativo
+## How does the type of the app (paid/free) relate to the rating?
+
+To visualize how the app beeing free or paid influence on the app rating, the dataset was split into paid and free applications and the average rating was calculated for each of these types of applications.
+By analyzing the graph below it is possible to see that the fact that the application beeing free or paid does not necessarily directly influence in the user's perception of the quality of the application.
 
 ```{r graficoTRev, echo=FALSE, fig.align='center', fig.width=6, fig.height=4}
 
