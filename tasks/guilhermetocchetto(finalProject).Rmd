@@ -25,7 +25,7 @@ The choosen dataset contains all the details of the applications on Google Play.
  - The current version of the app available on PlayStore;
  - The minimum required Android version to run the app.
 
-```{r include=TRUE}
+```{r init, include=FALSE, echo=FALSE}
 library(readr)
 URL <- "data-set/googleplaystore.csv"
 df <- read_delim(URL, delim=",")
@@ -39,9 +39,9 @@ df
 ## Questions to answer
 
 - Which category of apps is the most downloaded?
-#I've changed the question because the installs collumn doesn't provide a consistent value
+<!--I've changed the question because the installs collumn doesn't provide a consistent value-->
 - How many apps are there in each category?
-```{r echo=FALSE}
+```{r graficoCat, echo=FALSE, fig.align='center', fig.width=6, fig.height=5}
 
 df$Category <- gsub('_', ' ', df$Category)
 
@@ -49,8 +49,11 @@ library(ggplot2);
   ggplot(df,
   aes(Category,..count..))+
   geom_point(stat = "count", size = 1)+
-  scale_y_continuous(name ="Number of Accidents", breaks=seq(0,1750,100))+
-  theme(axis.text.x = element_text(angle = 40, hjust = 1))
+  scale_y_continuous(name ="Number of Applications", breaks=seq(0,1750,100))+
+  theme(axis.text.x = element_text(angle = 65, hjust = 1))+
+  labs(title="Number of Applications for Each Category", 
+       subtitle="From kaggle.com", 
+       caption="Google Play Store Apps")
 
 #library(ggplot2);
   #ggplot(df,
@@ -64,8 +67,8 @@ library(ggplot2);
 
 - How many categories have the mean rating grater than 4?
 
-```{r echo=FALSE}
-library(dplyr)
+```{r graficoRat4,  echo=FALSE, fig.align='center', fig.width=6, fig.height=7}
+library(dplyr, warn.conflicts = FALSE)
 library(magrittr)
 
 catNames <- c("ART AND DESIGN","AUTO AND VEHICLES","BEAUTY","BOOKS AND REFERENCE","BUSINESS","COMICS","COMMUNICATION","DATING","EDUCATION","ENTERTAINMENT","EVENTS", "FAMILY", "FINANCE","GAME","HEALTH AND FITNESS","HOUSE AND HOME","LIBRARIES AND DEMO","LIFESTYLE","MAPS AND NAVIGATION","MEDICAL","NEWS AND MAGAZINES","PARENTING","PERSONALIZATION","PHOTOGRAPHY","PRODUCTIVITY","SHOPPING","SOCIAL","SPORTS","TOOLS","TRAVEL AND LOCAL","VIDEO PLAYERS","WEATHER")
@@ -81,18 +84,20 @@ for (i in 1:32) {
   average = sum / n_rows
   dfRate$Ratings[i] <- average[1,1]
 }
-print(dfRate)
 
 library(ggplot2);
   ggplot(dfRate,
-  aes(Ratings, Categories))+geom_point()
+  aes(Ratings, Categories))+geom_point()+
+  labs(title="Apps Categories Vs Apps Ratings", 
+       subtitle="From kaggle.com", 
+       caption="Google Play Store Apps")
 ```
 
 - Is the content rating related to the number of downloads/installs?
-#I've changed the question because the installs collumn doesn't provide a consistent value
+<!--I've changed the question because the installs collumn doesn't provide a consistent value-->
 - Is the content rating related to the number of reviews?
 
-```{r echo=FALSE}
+```{r graficoRateXRev, echo=FALSE, fig.align='center', fig.width=8.5, fig.height=5}
 
 
 
@@ -105,44 +110,50 @@ for (i in 1:32) {
   dfRate$Reviews[i] <- average[1,1]
 }
 
-dfRate
+#dfRate
 
 type <-c(dfRate$Ratings, dfRate$Reviews)
-type
+#type
 
 p <-ggplot(dfRate, aes(Categories, Ratings))
 p +geom_bar(stat = "identity", aes(fill = Reviews), position = "dodge") +
-  xlab("Months") + ylab("Count") +
-  ggtitle("Chickens & Eggs") +
+  geom_text(aes(label=round(Ratings, 2)), vjust=1.6, color="white", size=2.1)+
+  xlab("Applications") + ylab("Rating") +
+  ggtitle("Rating/Reviews") +
   theme_bw()+
-  theme(axis.text.x = element_text(angle = 40, hjust = 1))
+  theme(axis.text.x = element_text(angle = 65, hjust = 1))+
+  labs(title="Apps Ratings Vs Apps Reviews", 
+       subtitle="From kaggle.com", 
+       caption="Google Play Store Apps")
 
 
 
 ```
 
 - How does the type of the app (paid/free) relate to the rating?
+É possível ver que o ser pago ou gratz não influencia na percepção do usuário em relação a qualidade do aplicativo
 
-```{r echo=FALSE}
+```{r graficoTRev, echo=FALSE, fig.align='center', fig.width=6, fig.height=4}
 
-dfRate$Reviews <- NA
+dfTR <- matrix(0, ncol = 2, nrow = 2)
+dfTR <- data.frame(dfTR)
+n_rows = df %>% filter(Type=='Paid') %>% tally()
+sum = df %>% filter(Type=='Paid') %>% select(Rating) %>% sum()
+average = sum / n_rows
+dfTR$Type[1] <- 'Paid'
+dfTR$Rating[1] <- average[1,1]
 
-for (i in 1:32) {
-  n_rows = df %>% filter(Category==catNames[i]) %>% tally()
-  sum = df %>% filter(Category==catNames[i]) %>% select(Reviews) %>% sum()
-  average = sum / n_rows
-  dfRate$Reviews[i] <- average[1,1]
-}
+n_rows = df %>% filter(Type=='Free') %>% tally()
+sum = df %>% filter(Type=='Free') %>% select(Rating) %>% sum()
+average = sum / n_rows
+dfTR$Type[2] <- 'Free'
+dfTR$Rating[2] <- average[1,1]
 
-dfRate
-
-type <-c(dfRate$Ratings, dfRate$Reviews)
-type
-
-p <-ggplot(dfRate, aes(Categories, Ratings))
-p +geom_bar(stat = "identity", aes(fill = Reviews), position = "dodge") +
-  xlab("Months") + ylab("Count") +
-  ggtitle("Chickens & Eggs") +
-  theme_bw()+
-  theme(axis.text.x = element_text(angle = 40, hjust = 1))
+p <-ggplot(dfTR, aes(Type, Rating))
+p +geom_bar(stat = "identity", aes(fill = Type), position = "dodge") +
+  geom_text(aes(label=round(Rating, 2)), vjust=1.6, color="black", size=3.5)+
+  xlab("") + ylab("Rating") +
+  labs(title="Apps Vs Apps Reviews", 
+       subtitle="From kaggle.com", 
+       caption="Google Play Store Apps")
 ```
