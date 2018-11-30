@@ -45,7 +45,7 @@ df
 
 ## How many apps are there in each category?
 
-To know how many applications you have in each of the categories, knowing that each row in the dataset corresponds to one application, we just have to count the number of rows for each category.
+To know how many applications is there in each of the categories, knowing that each row in the dataset corresponds to one application, we just have to count the number of rows for each category.
 Based on that the graph bellow was plotted showing us that the amount of apps on each category.
 
 ```{r graficoCat, echo=FALSE, fig.align='center', fig.width=6, fig.height=5}
@@ -77,7 +77,7 @@ library(ggplot2);
 ## How many categories have the mean rating grater than 4?
 
 To analyze how many of the categories have a rating greater than 4, the apps were categorized by category and the average rating was calculated for each set of apps in a given category.
-As shown in the graph below, all the categories have the rating above four, with the exception of "Dating" category.
+As shown in the graph below, all the categories have the rating above four, with the exception of the "Dating" category.
 
 ```{r graficoRat4,  echo=FALSE, fig.align='center', fig.width=6, fig.height=7}
 library(dplyr, warn.conflicts = FALSE)
@@ -109,7 +109,7 @@ library(ggplot2);
 
 ## How the rating relate to the number of reviews?
 
-To find out the relation of the reviews with the number of evaluations, an average of the evaluations of each category of the applications was generated and from that the graph below was generated. Based on the data that is shown in the graph below it seems that the number of reviews does not have a significant influence on users' app ratings, you can see that there are categories with a large number of reviews with ratings close to the highest and lowest ratings.
+To find out the relation of the reviews with the number of evaluations, an average of the evaluations of each category of the applications was created and from that the graph below was generated. Based on the data that is shown in the graph below it seems that the number of reviews does not have a significant influence on users' app ratings, you can see that there are categories with a large number of reviews with ratings close to the highest and lowest ratings.
 
 ```{r graficoRateXRev, echo=FALSE, fig.align='center', fig.width=8.5, fig.height=5}
 
@@ -146,7 +146,7 @@ p +geom_bar(stat = "identity", aes(fill = Reviews), position = "dodge") +
 ## How does the type of the app (paid/free) relate to the rating?
 
 To visualize how the app beeing free or paid influence on the app rating, the dataset was split into paid and free applications and the average rating was calculated for each of these types of applications.
-By analyzing the graph below it is possible to see that the fact that the application beeing free or paid does not necessarily directly influence in the user's perception of the quality of the application.
+By analyzing the graph below, based on the average ratings, it is possible to see that the fact that the application beeing free or paid does not necessarily directly influence in the user's perception of the quality of the application.
 
 ```{r graficoTRev, echo=FALSE, fig.align='center', fig.width=6, fig.height=4}
 
@@ -168,7 +168,7 @@ p <-ggplot(dfTR, aes(Type, Rating))
 p + geom_point(stat = "identity")+
   geom_text(aes(label=round(Rating, 2)), vjust=1.6, color="black", size=3.5)+
   xlab("") + ylim(1,5)+
-  labs(title="Apps Vs Apps Reviews", 
+  labs(title="Apps Rating Vs Apps Type", 
        subtitle="From kaggle.com", 
        caption="Google Play Store Apps")
 ```
