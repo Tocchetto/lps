@@ -165,9 +165,9 @@ dfTR$Type[2] <- 'Free'
 dfTR$Rating[2] <- average[1,1]
 
 p <-ggplot(dfTR, aes(Type, Rating))
-p +geom_bar(stat = "identity", position = "dodge") +
-  geom_text(aes(label=round(Rating, 2)), vjust=1.6, color="white", size=3.5)+
-  xlab("") + ylab("Rating") +
+p + geom_point(stat = "identity")+
+  geom_text(aes(label=round(Rating, 2)), vjust=1.6, color="black", size=3.5)+
+  xlab("") + ylim(1,5)+
   labs(title="Apps Vs Apps Reviews", 
        subtitle="From kaggle.com", 
        caption="Google Play Store Apps")
